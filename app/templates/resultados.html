@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados - Política Óptima</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Resultados del Entrenamiento</h1>
+
+        <h2>Política Aprendida:</h2>
+        <ul>
+            {% for i in range(politica|length) %}
+                <li>Estado {{ i }} → {{ politica[i] }}</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Tabla Q:</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Estado \ Acción</th>
+                    <th>No hacer nada</th>
+                    <th>Enviar promoción</th>
+                    <th>Llamar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in range(q_table.shape[0]) %}
+                    <tr>
+                        <td>Estado {{ i }}</td>
+                        {% for j in range(q_table.shape[1]) %}
+                            <td>{{ '%.2f'|format(q_table[i][j]) }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Recompensas Totales por Episodio</h2>
+        <img src="{{ url_for('static', filename='recompensas.png') }}" alt="Gráfico de recompensas" width="600">
+
+        <a href="{{ url_for('main.index') }}" class="boton">Volver al inicio</a>
+    </div>
+</body>
+</html>

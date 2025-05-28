@@ -1,0 +1,18 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Cargar el historial de recompensas
+reward_history = np.load("modelo/recompensas.npy")
+
+# Mostrar los primeros valores
+print("Primeras recompensas:", reward_history[:10])
+
+# Graficar
+plt.figure(figsize=(10, 5))
+plt.plot(reward_history)
+plt.title("Recompensa Total por Episodio")
+plt.xlabel("Episodio")
+plt.ylabel("Recompensa Total")
+plt.grid(True)
+plt.show()
+ 

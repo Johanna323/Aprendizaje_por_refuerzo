@@ -1,9 +1,13 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import joblib
 import numpy as np
 import pandas as pd
 
 app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return redirect(url_for("reinforcement"))
 
 @app.route('/reinforcement')
 def reinforcement():

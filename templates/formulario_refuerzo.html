@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Final | CHURN</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200..1000&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <nav class="container__sidebar">
+            <h1>Aprendizaje por Refuerzo | CHURN</h1>
+            <ul>
+                <li><a href="/reinforcement">Resultados del modelo Entrenado</a></li>
+                <li class="active"><a href="/ejecutar-modelo">Ejecutar Modelo</a></li>
+            </ul>
+        </nav>
+        <main class="container__content" id="main-content">
+            <div class="content__info">
+                {% block content %}
+                <h1>Agente de Aprendizaje por Refuerzo</h1>
+                <p>Simula un cliente y descubre qué acción recomienda el agente para maximizar la retención.</p>
+
+                <!-- FORMULARIO -->
+                <form method="POST" class="formulario-churn" id="formulario" {% if resultado %}style="display: none;" {%
+                    endif %}>
+                    <div class="form-grid">
+                        {% for label, name, options in [
+                        ('Género:', 'gender', ['Female', 'Male']),
+                        ('Adulto Mayor (0 = No, 1 = Sí):', 'SeniorCitizen', []),
+                        ('¿Tiene pareja?', 'Partner', ['Yes', 'No']),
+                        ('¿Tiene personas a cargo?', 'Dependents', ['Yes', 'No']),
+                        ('Antigüedad (meses):', 'tenure', []),
+                        ('¿Tiene servicio telefónico?', 'PhoneService', ['Yes', 'No']),
+                        ('Líneas múltiples:', 'MultipleLines', ['No', 'Yes', 'No phone service']),
+                        ('Tipo de Internet:', 'InternetService', ['DSL', 'Fiber optic', 'No']),
+                        ('Seguridad en línea:', 'OnlineSecurity', ['Yes', 'No', 'No internet service']),
+                        ('Respaldo en línea:', 'OnlineBackup', ['Yes', 'No', 'No internet service']),
+                        ('Protección de dispositivo:', 'DeviceProtection', ['Yes', 'No', 'No internet service']),
+                        ('Soporte técnico:', 'TechSupport', ['Yes', 'No', 'No internet service']),
+                        ('Streaming TV:', 'StreamingTV', ['Yes', 'No', 'No internet service']),
+                        ('Streaming Películas:', 'StreamingMovies', ['Yes', 'No', 'No internet service']),
+                        ('Tipo de contrato:', 'Contract', ['Month-to-month', 'One year', 'Two year']),
+                        ('Factura sin papel:', 'PaperlessBilling', ['Yes', 'No']),
+                        ('Método de pago:', 'PaymentMethod', ['Electronic check', 'Mailed check', 'Bank transfer
+                        (automatic)', 'Credit card (automatic)']),
+                        ('Cargos mensuales:', 'MonthlyCharges', []),
+                        ('Total de cargos:', 'TotalCharges', [])
+                        ] %}
+                        <label>{{ label }}
+                            {% if options %}
+                            <select name="{{ name }}" required>
+                                {% for opt in options %}
+                                <option value="{{ opt }}">{{ opt }}</option>
+                                {% endfor %}
+                            </select>
+                            {% else %}
+                            <input type="number" name="{{ name }}" step="0.01" required />
+                            {% endif %}
+                        </label>
+                        {% endfor %}
+                    </div>
+                    <div class="loader-container">
+                        <button type="submit" class="btn" id="submit-btn">Ejecutar Modelo de Aprendizaje por
+                            Refuerzo</button>
+                        <div class="loader" id="loader"></div>
+                    </div>
+                </form>
+
+                <!-- RESULTADO -->
+                {% if resultado %}
+                <div class="resultado-card">
+                    <h3>🧠 Acción recomendada por el agente:</h3>
+                    <p><strong>{{ resultado }}</strong></p>
+                    <p>{{ explicacion }}</p>
+                    <button onclick="mostrarFormulario()">Volver a llenar formulario</button>
+                </div>
+                {% endif %}
+                {% endblock %}
+
+            </div>
+        </main>
+    </div>
+    <footer>
+        <p>Proyecto Final Machine Learning | &copy; 2025</p>
+        <p>Kelly Johanna Garzon Jenny | Jenny Paola Rodriguez</p>
+    </footer>
+    <script>
+        function mostrarFormulario() {
+            document.getElementById('formulario').style.display = 'block';
+            document.querySelector('.resultado-card').style.display = 'none';
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.querySelector("form");
+            const btn = document.getElementById("submit-btn");
+            const loader = document.getElementById("loader");
+
+            if (form) {
+                form.addEventListener("submit", function () {
+                    btn.disabled = true;
+                    loader.style.display = "inline-block";
+                });
+            }
+        });
+    </script>
+
+</body>

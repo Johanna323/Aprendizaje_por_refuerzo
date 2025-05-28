@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyecto Final | CHURN</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200..1000&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+    <nav class="container__sidebar">
+      <h1>Aprendizaje por Refuerzo | CHURN</h1>
+      <ul>
+        <li class="active"><a href="/reinforcement">Resultados del modelo Entrenado</a></li>
+        <li><a href="/ejecutar-modelo">Ejecutar Modelo</a></li>
+      </ul>
+    </nav>
+
+    <main class="container__content" id="main-content">
+      <div class="content__info">
+        <h1>Resultados del Agente de Aprendizaje por Refuerzo</h1>
+
+        <div class="section-card model-insight">
+          <h2>🧠 ¿Cómo se entrenó el modelo?</h2>
+          <p>
+            Se entrenó un agente usando <strong>Q-Learning</strong> con datos reales de clientes de una empresa de telecomunicaciones. El agente aprende a asociar perfiles de clientes con la acción que maximiza la retención:
+          </p>
+          <ul class="result-list">
+            <li>✔️ Se usó una matriz Q (`q_table`) para representar el conocimiento aprendido.</li>
+            <li>✔️ Se simularon <strong>{{ total_episodes }}</strong> episodios con acciones como "ofrecer descuento", "enviar encuesta" o "no hacer nada".</li>
+            <li>✔️ Las recompensas se asignaron según si el cliente abandonaba o no el servicio.</li>
+            <li>✔️ Se utilizó escalado y codificación de variables para normalizar los datos.</li>
+          </ul>
+        </div>
+
+        <div class="section-card">
+          <h2>📊 Métricas generales del modelo</h2>
+          <ul class="result-list">
+            <li><strong>🔢 Forma de la Q-table:</strong> {{ q_shape }}</li>
+            <li><strong>🎯 Total de episodios:</strong> {{ total_episodes }}</li>
+            <li><strong>💰 Suma total de recompensas acumuladas:</strong> {{ total_reward }}</li>
+          </ul>
+        </div>
+
+        <div class="section-card">
+          <h2>📈 Evolución de la Recompensa</h2>
+          <p>Este gráfico muestra cómo el agente fue mejorando sus decisiones con cada episodio:</p>
+          <img src="{{ url_for('static', filename=rewards_plot) }}" width="600" alt="Recompensas por episodio">
+        </div>
+
+        <div class="section-card">
+          <h2>🔥 Mapa de Calor de la Q-Table</h2>
+          <p>Visualiza la intensidad de las decisiones aprendidas por el agente:</p>
+          <img src="{{ url_for('static', filename=q_heatmap) }}" width="600" alt="Mapa de calor Q-table">
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <p>Proyecto Final Machine Learning | &copy; 2025</p>
+    <p>Kelly Johanna Garzón Jenny | Jenny Paola Rodríguez</p>
+  </footer>
+</body>
+</html>
